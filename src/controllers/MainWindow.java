@@ -1,9 +1,11 @@
 package controllers;
 
+import image.ImageOperations;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import util.FxmlLoader;
+import video.FaceDetection;
 import video.VideoStream;
 
 /**
@@ -19,9 +21,12 @@ public class MainWindow extends AnchorPane {
 
     public MainWindow() {
         FxmlLoader.loadFxml(this, "/fxml/main_window.fxml");
-        this.videoStream = new VideoStream(videoFrame);
+//        this.videoStream = new VideoStream(videoFrame);
+        VideoStream imageOperations = new VideoStream(videoFrame);
+        videoFrame.setPreserveRatio(true);
         bindProperties();
-        videoStream.start();
+//        videoStream.start();
+        imageOperations.start();
     }
 
     private void bindProperties() {
@@ -29,8 +34,7 @@ public class MainWindow extends AnchorPane {
         videoFrame.fitWidthProperty().bind(widthProperty());
     }
 
-
     public void stopTasks() {
-        videoStream.stop();
+//        videoStream.stop();
     }
 }

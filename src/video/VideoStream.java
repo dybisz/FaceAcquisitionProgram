@@ -2,7 +2,6 @@ package video;
 
 import javafx.scene.image.ImageView;
 import org.opencv.videoio.VideoCapture;
-import util.FrameGrabber;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * Created by dybisz on 23/10/2015.
  */
 public class VideoStream {
-    private final static double REFRESH_RATE = 33;
+    private final static long REFRESH_RATE = 33;
     private ScheduledExecutorService timer;
     private VideoCapture videoCapture = new VideoCapture();
     private ImageView videoFrame;
@@ -49,9 +48,9 @@ public class VideoStream {
      * Grabs frame every 33 milliseconds and displays it in {@link #videoFrame}
      */
     private void startFrameProcessing() {
-        FrameGrabber frameGrabber =  new FrameGrabber(videoFrame, videoCapture);
+        FaceDetection frameGrabber =  new FaceDetection(videoFrame, videoCapture);
         this.timer = Executors.newSingleThreadScheduledExecutor();
-        this.timer.scheduleAtFixedRate(frameGrabber, 0, 33, TimeUnit.MILLISECONDS);
+        this.timer.scheduleAtFixedRate(frameGrabber, 0, REFRESH_RATE, TimeUnit.MILLISECONDS);
     }
 
     public void stop() {

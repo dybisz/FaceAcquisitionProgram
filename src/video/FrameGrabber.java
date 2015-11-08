@@ -1,4 +1,4 @@
-package util;
+package video;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +14,9 @@ import java.io.ByteArrayInputStream;
  * Class based on introduction tutorial from:
  * http://opencv-java-tutorials.readthedocs.org/en/latest
  * /03%20-%20First%20JavaFX%20Application%20with%20OpenCV.html
+ * <p></p>
+ * By extending this this class oen can control e.g. pixel manipulation of
+ * a video.
  * <p></p>
  * Created by dybisz on 23/10/2015.
  */
@@ -48,15 +51,7 @@ public class FrameGrabber implements Runnable {
             {
                 // read the current frame
                 this.capture.read(frame);
-
-                // if the frame is not empty, process it
-                if (!frame.empty())
-                {
-                    // convert the image to gray scale
-                    Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
-                    // convert the Mat object (OpenCV) to Image (JavaFX)
-                    imageToShow = mat2Image(frame);
-                }
+                imageToShow = processFrame(frame);
 
             }
             catch (Exception e)
@@ -69,6 +64,19 @@ public class FrameGrabber implements Runnable {
         return imageToShow;
     }
 
+    protected Image processFrame(Mat frame) {
+        // if the frame is not empty, process it
+        if (!frame.empty())
+        {
+            // convert the image to gray scale
+            Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
+            // convert the Mat object (OpenCV) to Image (JavaFX)
+            return mat2Image(frame);
+        }
+
+        return null;
+    }
+
     /**
      * Convert a Mat object (OpenCV) in the corresponding Image for JavaFX
      *
@@ -79,7 +87,7 @@ public class FrameGrabber implements Runnable {
      *            the {@link Mat} representing the current frame
      * @return the {@link Image} to show
      */
-    private Image mat2Image(Mat frame)
+    protected Image mat2Image(Mat frame)
     {
         // create a temporary buffer
         MatOfByte buffer = new MatOfByte();
